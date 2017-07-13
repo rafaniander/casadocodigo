@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +18,7 @@
             </tr>
             <c:forEach items="${products}" var="product">
                 <tr>
-                    <td>${product.title}</td>
+                    <td><a href="${spring:mvcUrl('PC#show').arg(0,product.id).build()}">${product.title}</a></td>
                     <td>
                         <c:forEach items="${product.prices}" var="price">
                             [${price.value} - ${price.bookType}]
