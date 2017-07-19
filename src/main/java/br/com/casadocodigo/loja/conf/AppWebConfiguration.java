@@ -1,5 +1,10 @@
 package br.com.casadocodigo.loja.conf;
 
+import com.google.common.cache.CacheBuilder;
+import java.util.concurrent.TimeUnit;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.guava.GuavaCacheManager;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -14,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @EnableWebMvc
+@EnableCaching
 @ComponentScan("br.com.casadocodigo.loja")
 public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 
@@ -25,7 +31,7 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
         resolver.setExposedContextBeanNames("shoppingCart");
         return resolver;
     }
-    
+
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource bundle = new ReloadableResourceBundleMessageSource();
@@ -34,7 +40,7 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
         bundle.setCacheSeconds(1);
         return bundle;
     }
-    
+
     @Bean
     public FormattingConversionService mvcConversionService() {
         DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService(true);
@@ -43,10 +49,18 @@ public class AppWebConfiguration extends WebMvcConfigurerAdapter {
         registrar.registerFormatters(conversionService);
         return conversionService;
     }
-    
+
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
+    }
+
+    @Bean
+    public CacheManager cacheManager() {
+        CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(5, TimeUnit.MINUTES);
+        GuavaCacheManager cacheManager = new GuavaCacheManager();
+        cacheManager.setCacheBuilder(builder);
+        return cacheManager;
     }
 
 }
