@@ -2,7 +2,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
 <!doctype html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="pt"><![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang="pt"><![endif]-->
@@ -18,7 +19,7 @@
         <title>${product.title}</title>
     </head>
     <body class="product">
-        
+
         <!--Código aqui-->
         <header id="layout-header">
             <div class="clearfix container">
@@ -34,7 +35,7 @@
                 </div>
             </div>
         </header>
-        
+
         <nav class="categories-nav">
             <ul class="container">
                 <li class="category"><a href="http://www.casadocodigo.com.br">Home</a>
@@ -64,7 +65,7 @@
             </header>
 
             <section class="buy-options clearfix">
-                <form action="<c:url value="/shopping"/>" method="post" class="container">
+                <form:form servletRelativeAction="/shopping" cssClass="container">
                     <input type="hidden" value="${product.id}" name="productId"/>
                     <ul id="variants" class="clearfix">
                         <c:forEach items="${product.prices}" var="price">
@@ -83,7 +84,7 @@
                     <input type="submit" class="submit-image icon-basket-alt"
                            alt="Compre agora"
                            title="Compre agora '${product.title}'!" value="comprar"/>
-                </form>
+                </form:form>
             </section>
 
             <div class="container">
